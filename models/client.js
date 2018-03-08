@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var users = sequelize.define('users', {
+  var clients = sequelize.define('users', {
     uid:{
       type: DataTypes.UUID,
       unique: true,
@@ -48,5 +48,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  return users;
+  return clients;
 };
