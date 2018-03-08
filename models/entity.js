@@ -1,16 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var users = sequelize.define('entity', {
-    uid:{
-      type: DataTypes.UUID,
-      unique: true,
-      primaryKey: true
-    },
-    entityname: {
+    entity_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    companyid: {
+    companyId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
