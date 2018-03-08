@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     vin_number: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     driver: {
@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     classMethods: {
       associate: function(models) {

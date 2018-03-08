@@ -1,18 +1,19 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Property = db.sequelize.import('../models/property.js');
-
+const Entity = db.sequelize.import('../models/entity.js')
 // CREATING PROPERTY
 router.post('/',(req, res)  => {
-    address: req.body.properties.address
-    building_sprink: req.body.properties.building_sprink
-    building_owner: req.body.properties.building_owner
-    sqft_of_building: req.body.properties.sqft_of_building
-    building_occ: req.body.properties.building_occ
-    location_employees: req.body.properties.location_employees
-    location_contents: req.body.properties.location_contents
-    location_inventory: req.body.properties.location_inventory
-    entityId: req.entity.id
+    var address = req.body.properties.address
+    var building_sprink = req.body.properties.building_sprink
+    var building_owner = req.body.properties.building_owner
+    var sqft_of_building = req.body.properties.sqft_of_building
+    var building_occ = req.body.properties.building_occ
+    var location_employees = req.body.properties.location_employees
+    var location_contents = req.body.properties.location_contents
+    var location_inventory = req.body.properties.location_inventory
+    var entityId = req.body.entity.id
+    var companyId = req.body.company.id
 
     Property.create({
         address: address,
@@ -23,7 +24,8 @@ router.post('/',(req, res)  => {
         location_employees: location_employees,
         location_contents: location_contents,
         location_inventory: location_inventory,
-        entityId: entityId 
+        entityId: entityId,
+        companyId: companyId
     }).then(
         (successData) => {
             res.json({data: successData})
@@ -34,9 +36,35 @@ router.post('/',(req, res)  => {
     )    
 })
 
-//FINDING ALL PROPERTIES
-router.get('/' , function(req, res) {
-	Property.findAll()
+//FINDING ALL PROPERTIES OF SPECIFIC ENTITY
+router.get('/all/:entityId' , function(req, res) {
+    var data = req.params.entityId
+	Property.findAll(
+        {
+            where: {entityId: data}
+        }
+    )
+	.then(
+		//success
+		function findAllSuccess(data) {
+			// console.log(data);
+			res.json(data);
+		},
+		//failure
+		function findAllError(err) {
+			res.send(500, err.message);
+		}
+	);
+});
+
+//FIND ALL PROPERTIES
+router.get('/company/:companyId' , function(req, res) {
+    var data = req.params.companyId
+	Property.findAll(
+        {
+            where: {companyId: data}
+        }
+    )
 	.then(
 		//success
 		function findAllSuccess(data) {
@@ -69,16 +97,17 @@ router.get('/:id', function(req, res) {
 
 // UPDATING PROPERTY
 router.put('/',(req, res)  => {
-    address: req.body.properties.address
-    building_sprink: req.body.properties.building_sprink
-    building_owner: req.body.properties.building_owner
-    sqft_of_building: req.body.properties.sqft_of_building
-    building_occ: req.body.properties.building_occ
-    location_employees: req.body.properties.location_employees
-    location_contents: req.body.properties.location_contents
-    location_inventory: req.body.properties.location_inventory
-    entityId: req.entity.id
-    data: req.body.properties.id
+    var address = req.body.properties.address
+    var building_sprink = req.body.properties.building_sprink
+    var building_owner = req.body.properties.building_owner
+    var sqft_of_building = req.body.properties.sqft_of_building
+    var building_occ = req.body.properties.building_occ
+    var location_employees = req.body.properties.location_employees
+    var location_contents = req.body.properties.location_contents
+    var location_inventory = req.body.properties.location_inventory
+    var entityId = req.body.entity.id
+    var companyId = req.body.company.id
+    var data = req.body.properties.id
 
     Property.update({
         address: address,
@@ -89,7 +118,8 @@ router.put('/',(req, res)  => {
         location_employees: location_employees,
         location_contents: location_contents,
         location_inventory: location_inventory,
-        entityId: entityId 
+        entityId: entityId,
+        companyId: companyId 
     },
     {where: {id: data}}
     ).then(
@@ -106,7 +136,7 @@ router.put('/',(req, res)  => {
 router.delete('/:id', function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
-	Videos
+	Property
 	.destroy({
 		where: {id: data}
 	}).then(
