@@ -44,7 +44,7 @@ router.post('/login', requireSignin , (req, res, next) => {
         firstName : req.client.firstname,
         lastName : req.client.lastname,
         email : req.client.email,
-        token : createToken(req.user.uid)
+        token : createToken(req.client.uid)
     }
 
     res.json({message: "logged in successfully", client: clientData})
