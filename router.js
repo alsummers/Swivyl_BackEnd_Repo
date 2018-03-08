@@ -2,6 +2,7 @@ module.exports = app => {
     app.use('/api/user', require('./controllers/userscontroller'));
     app.use('/api/property', require('./controllers/propertycontroller'));
     app.use('/api/client', require('./controllers/clientcontroller'));
+    app.use('/api/company', require('./controllers/companycontroller'));
 
     // Test page
     app.get('/', (req, res, next) => {

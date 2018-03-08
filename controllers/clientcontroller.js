@@ -10,7 +10,7 @@ const jwt = require('jwt-simple');
 
 const createToken = (clientId) => {
     const currentTime = new Date().getTime();
-    return jwt.encode({sub: userId , iat: currentTime}, process.env.JWTSECRET)
+    return jwt.encode({sub: clientId , iat: currentTime}, 'i_am_secret')
 } 
 
 router.post('/register',(req, res)  => {
@@ -28,7 +28,7 @@ router.post('/register',(req, res)  => {
                 email : successData.email,
                 token : createToken(successData.uid)
             }
-            res.json({message: `Welcome ${clientData.firstName}`, data: clientData})
+            res.json({message: `Welcome ${clientData.firstname}`, data: clientData})
         },
         (err) => {
             res.send({error: err})
@@ -36,6 +36,8 @@ router.post('/register',(req, res)  => {
     )    
 })
 
+
+/// login needs email and password
 router.post('/login', requireSignin , (req, res, next) => {
 
     const clientData = {

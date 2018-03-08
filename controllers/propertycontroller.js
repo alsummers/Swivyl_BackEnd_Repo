@@ -54,7 +54,7 @@ router.get('/' , function(req, res) {
 router.get('/:id', function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
-	Videos
+	Property
 	.findOne({
 		where: {id: data}
 	}).then(
