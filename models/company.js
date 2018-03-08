@@ -1,17 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var users = sequelize.define('company', {
-    id:{
-      type: DataTypes.INTEGER,
-      unique: true,
-      primaryKey: true
-    },
+  var company = sequelize.define('company', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    owmer: {
-      type: DataTypes.INTEGER,
+    owner: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
     img: {
