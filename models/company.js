@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var users = sequelize.define('company', {
+  var company = sequelize.define('company', {
     id:{
       type: DataTypes.INTEGER,
       unique: true,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    owmer: {
+    owner: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

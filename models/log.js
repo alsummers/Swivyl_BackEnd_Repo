@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var users = sequelize.define('log', {
+  var log = sequelize.define('log', {
     id:{
       type: DataTypes.INTEGER,
       unique: true,

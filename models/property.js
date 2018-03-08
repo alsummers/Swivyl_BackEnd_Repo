@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     building_sprink: {
-        type: DataTypes.BOOL,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
     building_owner: {

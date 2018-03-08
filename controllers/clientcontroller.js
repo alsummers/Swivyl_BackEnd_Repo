@@ -15,7 +15,7 @@ const createToken = (clientId) => {
 
 router.post('/register',(req, res)  => {
     
-    Clent.create({
+    Client.create({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -23,8 +23,8 @@ router.post('/register',(req, res)  => {
     }).then(
         (successData) => {
             const clientData = {
-                firstName : successData.firstname,
-                lastName : successData.lastname,
+                firstname : successData.firstname,
+                lastname : successData.lastname,
                 email : successData.email,
                 token : createToken(successData.uid)
             }
