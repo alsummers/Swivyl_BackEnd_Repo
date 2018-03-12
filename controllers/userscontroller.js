@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../models/index');
-const User = db.sequelize.import('../models/users');
+const User = db.sequelize.import('../models/client');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 require('../services/passport');
