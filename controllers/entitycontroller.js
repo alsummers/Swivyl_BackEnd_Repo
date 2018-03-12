@@ -8,7 +8,7 @@ require('../services/authorizeClient');
 const requireJWT = passport.authenticate('jwt', { session: false})
 
 // CREATING ENTITY
-router.post('/',(req, res)  => {
+router.post('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var company = req.body.company.id
 
@@ -27,7 +27,7 @@ router.post('/',(req, res)  => {
 
 //FINDING ALL ENTITIES OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/all/:companyId' , function(req, res) {
+router.get('/all/:companyId' , requireJwt,function(req, res) {
     var data = req.params.companyId;
 
 	Entity.findAll(
@@ -49,7 +49,7 @@ router.get('/all/:companyId' , function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', function(req, res) {
+router.get('/:id', requireJwt,function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Entity
@@ -66,7 +66,7 @@ router.get('/:id', function(req, res) {
 });
 
 // UPDATING COMPANY
-router.put('/',(req, res)  => {
+router.put('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var data = req.body.entity.id
     var company = req.body.company.id
@@ -87,7 +87,7 @@ router.put('/',(req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id', function(req, res) {
+router.delete('/:id',requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Entity
