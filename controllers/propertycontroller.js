@@ -6,7 +6,7 @@ const passport = require('passport');
 require('../services/authorizeClient');
 const requireJWT = passport.authenticate('jwt', { session: false})
 // CREATING PROPERTY
-router.post('/',(req, res)  => {
+router.post('/', requireJWT, (req, res)  => {
     var address = req.body.properties.address
     var building_sprink = req.body.properties.building_sprink
     var building_owner = req.body.properties.building_owner
@@ -40,7 +40,7 @@ router.post('/',(req, res)  => {
 })
 
 //FINDING ALL PROPERTIES OF SPECIFIC ENTITY
-router.get('/all/:entityId' , function(req, res) {
+router.get('/all/:entityId' ,requireJWT,  function(req, res) {
     var data = req.params.entityId
 	Property.findAll(
         {
@@ -61,7 +61,7 @@ router.get('/all/:entityId' , function(req, res) {
 });
 
 //FIND ALL PROPERTIES
-router.get('/company/:companyId' , function(req, res) {
+router.get('/company/:companyId' , requireJWT, function(req, res) {
     var data = req.params.companyId
 	Property.findAll(
         {
@@ -82,7 +82,7 @@ router.get('/company/:companyId' , function(req, res) {
 });
 
 //FINDING ONE SPECIFIC PROPERTY
-router.get('/:id', function(req, res) {
+router.get('/:id', requireJWT, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Property
@@ -99,7 +99,7 @@ router.get('/:id', function(req, res) {
 });
 
 // UPDATING PROPERTY
-router.put('/',(req, res)  => {
+router.put('/', requireJWT, (req, res)  => {
     var address = req.body.properties.address
     var building_sprink = req.body.properties.building_sprink
     var building_owner = req.body.properties.building_owner
@@ -136,7 +136,7 @@ router.put('/',(req, res)  => {
 });
 
 // DELETE SPECIFIC PROPERTY
-router.delete('/:id', function(req, res) {
+router.delete('/:id', requireJWT, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Property

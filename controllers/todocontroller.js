@@ -5,7 +5,7 @@ const passport = require('passport');
 require('../services/authorizeClient');
 const requireJWT = passport.authenticate('jwt', { session: false})
 // CREATING ENTITY
-router.post('/', (req, res) => {
+router.post('/', requireJWT, (req, res) => {
     var company = req.body.company.id
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 })
 //FINDING ALL TODO ASSIGNMENTS OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/all/:companyID', function (req, res) {
+router.get('/all/:companyID', requireJWT, function (req, res) {
     var data = req.params.companyID;
     Todo.findAll(
         {
@@ -44,7 +44,7 @@ router.get('/all/:companyID', function (req, res) {
         );
 });
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', function (req, res) {
+router.get('/:id', requireJWT, function (req, res) {
     var data = req.params.id;
     // console.log(data); here for testing purposes
     Todo
@@ -60,7 +60,7 @@ router.get('/:id', function (req, res) {
         );
 });
 // UPDATING TODO
-router.put('/', (req, res) => {
+router.put('/', requireJWT, (req, res) => {
     var company = req.body.company.id
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
@@ -80,7 +80,7 @@ router.put('/', (req, res) => {
     )
 });
 // DELETE SPECIFIC TODO ASSIGNMENT
-router.delete('/:id', function (req, res) {
+router.delete('/:id', requireJWT, function (req, res) {
     var data = req.params.id;
     // console.log(data); here for testing purposes
     Todo
