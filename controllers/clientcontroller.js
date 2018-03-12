@@ -10,7 +10,7 @@ const jwt = require('jwt-simple');
 
 const createToken = (clientId) => {
     const currentTime = new Date().getTime();
-    return jwt.encode({sub: clientId , iat: currentTime}, 'i_am_secret')
+    return jwt.encode({sub: clientId , iat: currentTime}, process.env.JWTSECRET )
 } 
 
 router.post('/register',(req, res)  => {

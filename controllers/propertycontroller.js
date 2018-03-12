@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Property = db.sequelize.import('../models/property.js');
-const Entity = db.sequelize.import('../models/entity.js')
+const Entity = db.sequelize.import('../models/entity.js');
+const passport = require('passport');
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
 // CREATING PROPERTY
 router.post('/',(req, res)  => {
     var address = req.body.properties.address

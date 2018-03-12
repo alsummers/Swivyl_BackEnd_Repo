@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Log = db.sequelize.import('../models/log.js');
+const passport = require('passport');
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
 
 // CREATING ENTITY
 router.post('/',(req, res)  => {

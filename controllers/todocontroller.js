@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Todo = db.sequelize.import('../models/todo.js');
+const passport = require('passport');
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
 // CREATING ENTITY
 router.post('/', (req, res) => {
     var company = req.body.company.id

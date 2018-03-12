@@ -3,6 +3,9 @@ const db = require('../models/index');
 const Company = db.sequelize.import('../models/company.js');
 const Client = db.sequelize.import('../models/client.js')
 const Entity = db.sequelize.import('../models/entity.js')
+const passport = require('passport');
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
 
 // CREATING ENTITY
 router.post('/',(req, res)  => {
