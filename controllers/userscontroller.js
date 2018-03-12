@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 require('../services/userpassport');
 const requireSignin = passport.authenticate('local', {session: false});
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
 const jwt = require('jwt-simple');
 
 
@@ -13,7 +15,7 @@ const createToken = (userId) => {
     return jwt.encode({sub: userId , iat: currentTime}, process.env.JWTSECRET)
 } 
 
-router.post('/register',(req, res)  => {
+router.post('/register', (req, res)  => {
     var firstname = req.body.firstname
     var lastname = req.body.lastname
     var email = req.body.email
@@ -51,7 +53,7 @@ router.post('/login', requireSignin , (req, res, next) => {
 })
 
 //FINDING ALL USERS OF SPECIFIC ENTITY
-router.get('/all/:entityId' , function(req, res) {
+router.get('/all/:entityId' , requireJWT, function(req, res) {
     var data = req.params.entityId
 	User.findAll(
         {
@@ -72,7 +74,7 @@ router.get('/all/:entityId' , function(req, res) {
 });
 
 //FIND ALL USERS
-router.get('/company/:companyId' , function(req, res) {
+router.get('/company/:companyId' , requireJWT, function(req, res) {
     var data = req.params.companyId
 	User.findAll(
         {
@@ -93,7 +95,7 @@ router.get('/company/:companyId' , function(req, res) {
 });
 
 //FINDING ONE SPECIFIC USER
-router.get('/:id', function(req, res) {
+router.get('/:id', requireJWT, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	User
@@ -110,7 +112,7 @@ router.get('/:id', function(req, res) {
 });
 
 // UPDATING USER
-router.put('/',(req, res)  => {
+router.put('/', requireJWT, (req, res)  => {
     var firstname = req.body.firstname
     var lastname = req.body.lastname
     var email = req.body.email
@@ -138,7 +140,7 @@ router.put('/',(req, res)  => {
 });
 
 // DELETE SPECIFIC USER
-router.delete('/:id', function(req, res) {
+router.delete('/:id', requireJWT, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	User
