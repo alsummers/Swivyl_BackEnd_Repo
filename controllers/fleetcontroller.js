@@ -6,7 +6,7 @@ require('../services/authorizeClient');
 const requireJWT = passport.authenticate('jwt', { session: false})
 
 // CREATING FLEET
-router.post('/',(req, res)  => {
+router.post('/',requireJwt,(req, res)  => {
     var year = req.body.fleets.year
     var make = req.body.fleets.make
     var model = req.body.fleets.model
@@ -40,7 +40,7 @@ router.post('/',(req, res)  => {
 })
 
 //FINDING ALL FLEETS OF SPECIFIC ENTITY
-router.get('/all/:entityId' , function(req, res) {
+router.get('/all/:entityId' , requireJwt,function(req, res) {
     var data = req.params.entityId
 	Fleet.findAll(
         {
@@ -61,7 +61,7 @@ router.get('/all/:entityId' , function(req, res) {
 });
 
 //FIND ALL FLEETS
-router.get('/company/:companyId' , function(req, res) {
+router.get('/company/:companyId' , requireJwt,function(req, res) {
     var data = req.params.companyId
 	Fleet.findAll(
         {
@@ -82,7 +82,7 @@ router.get('/company/:companyId' , function(req, res) {
 });
 
 //FINDING ONE SPECIFIC FlEET
-router.get('/:id', function(req, res) {
+router.get('/:id', requireJwt,function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Fleet
@@ -99,7 +99,7 @@ router.get('/:id', function(req, res) {
 });
 
 // UPDATING FLEET
-router.put('/',(req, res)  => {
+router.put('/',requireJwt,(req, res)  => {
     var year = req.body.fleets.year
     var make = req.body.fleets.make
     var model = req.body.fleets.model
@@ -136,7 +136,7 @@ router.put('/',(req, res)  => {
 });
 
 // DELETE SPECIFIC FLEET
-router.delete('/:id', function(req, res) {
+router.delete('/:id', requireJwt,function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Fleet

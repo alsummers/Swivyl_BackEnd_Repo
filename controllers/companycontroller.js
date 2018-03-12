@@ -32,7 +32,7 @@ router.post('/', requireJwt, (req, res)  => {
 
 //FINDING ALL COMPANIES OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/' , function(req, res) {
+router.get('/' ,requireJwt, function(req, res) {
     var data = req.client.uid;
 
 	Company.findAll(
@@ -54,7 +54,7 @@ router.get('/' , function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', function(req, res) {
+router.get('/:id',requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Company
@@ -71,7 +71,7 @@ router.get('/:id', function(req, res) {
 });
 
 // UPDATING COMPANY
-router.put('/',(req, res)  => {
+router.put('/',requireJwt,(req, res)  => {
     var name = req.body.company.name
     var img = req.body.company.img
     var owner = req.body.client.uid
@@ -94,7 +94,7 @@ router.put('/',(req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id', function(req, res) {
+router.delete('/:id',requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Company
