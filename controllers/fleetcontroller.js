@@ -3,7 +3,7 @@ const db = require('../models/index');
 const Fleet = db.sequelize.import('../models/fleet.js');
 const passport = require('passport');
 require('../services/authorizeClient');
-const requireJWT = passport.authenticate('jwt', { session: false})
+const requireJwt = passport.authenticate('jwt', { session: false})
 
 // CREATING FLEET
 router.post('/',requireJwt,(req, res)  => {

@@ -5,8 +5,8 @@ const db = require('../models/index').sequelize;
 const Client = db.import('../models/client.js');
 
 
-passport.use(new JWTStrategy(
-    {jwtFromRequest: ExtractJwt.fromHeader('authorization'), secretOrKey: process.env.JWTSECRET },
+passport.use(new JwtStrategy(
+    {jwtFromRequest: ExtractJwt.fromHeader('authorization'), secretOrKey:'i_am_secret' },
     (payload, done) => {
         Client.findOne({where: {uid:payload.sub}}).then(
             (client) => {

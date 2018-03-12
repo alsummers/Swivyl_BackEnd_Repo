@@ -3,10 +3,10 @@ const db = require('../models/index');
 const Shareholders = db.sequelize.import('../models/shareholders.js');
 const passport = require('passport');
 require('../services/authorizeClient');
-const requireJWT = passport.authenticate('jwt', { session: false})
+const requireJwt = passport.authenticate('jwt', { session: false})
 
 // CREATING ENTITY
-router.post('/', requireJWT, (req, res)  => {
+router.post('/', requireJwt, (req, res)  => {
     var firstname = req.body.shareholders.firstname
     var lastname = req.body.shareholders.lastname
     var address = req.body.shareholders.address
@@ -31,7 +31,7 @@ router.post('/', requireJWT, (req, res)  => {
 
 //FINDING ALL ENTITIES OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/all/:companyId' , requireJWT, function(req, res) {
+router.get('/all/:companyId' , requireJwt, function(req, res) {
     var data = req.params.companyId;
 
 	Shareholders.findAll(
@@ -53,7 +53,7 @@ router.get('/all/:companyId' , requireJWT, function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', requireJWT, function(req, res) {
+router.get('/:id', requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Shareholders
@@ -70,7 +70,7 @@ router.get('/:id', requireJWT, function(req, res) {
 });
 
 // UPDATING COMPANY
-router.put('/', requireJWT, (req, res)  => {
+router.put('/', requireJwt, (req, res)  => {
     var firstname = req.body.shareholders.firstname
     var lastname = req.body.shareholders.lastname
     var address = req.body.shareholders.address
@@ -97,7 +97,7 @@ router.put('/', requireJWT, (req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id', requireJWT, function(req, res) {
+router.delete('/:id', requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	Shareholders

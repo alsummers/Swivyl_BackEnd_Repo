@@ -6,7 +6,7 @@ const passport = require('passport');
 require('../services/userpassport');
 const requireSignin = passport.authenticate('local', {session: false});
 require('../services/authorizeClient');
-const requireJWT = passport.authenticate('jwt', { session: false})
+const requireJwt = passport.authenticate('jwt', { session: false})
 const jwt = require('jwt-simple');
 
 
@@ -53,7 +53,7 @@ router.post('/login', requireSignin , (req, res, next) => {
 })
 
 //FINDING ALL USERS OF SPECIFIC ENTITY
-router.get('/all/:entityId' , requireJWT, function(req, res) {
+router.get('/all/:entityId' , requireJwt, function(req, res) {
     var data = req.params.entityId
 	User.findAll(
         {
@@ -74,7 +74,7 @@ router.get('/all/:entityId' , requireJWT, function(req, res) {
 });
 
 //FIND ALL USERS
-router.get('/company/:companyId' , requireJWT, function(req, res) {
+router.get('/company/:companyId' , requireJwt, function(req, res) {
     var data = req.params.companyId
 	User.findAll(
         {
@@ -95,7 +95,7 @@ router.get('/company/:companyId' , requireJWT, function(req, res) {
 });
 
 //FINDING ONE SPECIFIC USER
-router.get('/:id', requireJWT, function(req, res) {
+router.get('/:id', requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	User
@@ -112,7 +112,7 @@ router.get('/:id', requireJWT, function(req, res) {
 });
 
 // UPDATING USER
-router.put('/', requireJWT, (req, res)  => {
+router.put('/', requireJwt, (req, res)  => {
     var firstname = req.body.firstname
     var lastname = req.body.lastname
     var email = req.body.email
@@ -140,7 +140,7 @@ router.put('/', requireJWT, (req, res)  => {
 });
 
 // DELETE SPECIFIC USER
-router.delete('/:id', requireJWT, function(req, res) {
+router.delete('/:id', requireJwt, function(req, res) {
 	var data = req.params.id;
 	// console.log(data); here for testing purposes
 	User

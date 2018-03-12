@@ -4,7 +4,7 @@ const Company = db.sequelize.import('../models/company.js');
 const Client = db.sequelize.import('../models/client.js')
 const passport = require('passport');
 require('../services/authorizeClient');
-const requireJWT = passport.authenticate('jwt', { session: false})
+const requireJwt = passport.authenticate('jwt', { session: false})
 
 
 
