@@ -2,8 +2,16 @@ const router = require('express').Router();
 const db = require('../models/index');
 const Company = db.sequelize.import('../models/company.js');
 const Client = db.sequelize.import('../models/client.js')
+const passport = require('passport');
+require('../services/authorizeClient');
+const requireJWT = passport.authenticate('jwt', { session: false})
+
+
+
+
+
 // CREATING COMPANY
-router.post('/',(req, res)  => {
+router.post('/', requireJwt, (req, res)  => {
     var name = req.body.company.name
     var img = req.body.company.img
     var owner = req.body.client.uid
