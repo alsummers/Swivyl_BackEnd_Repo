@@ -7,9 +7,7 @@ const requireJwt = passport.authenticate('jwt', { session: false})
 
 // CREATING ENTITY
 router.post('/', requireJwt, (req, res)  => {
-    var date = req.body.log.date
-    var company = req.body.company.id
-
+		var clientUid = req.body.client.uid
     Log.create({
         dateCreated: date,
         companyID: company

@@ -5,7 +5,7 @@ const Client = db.sequelize.import('../models/client.js')
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
-
+const Log = db.sequelize.import('../models/log.js')
 
 
 
@@ -22,7 +22,16 @@ router.post('/', requireJwt, (req, res)  => {
         owner: owner
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: req.body.client.uid,
+                description: req.body.client.uid + ' created a company with an id of ' + successData.id,
+                message: 'created company'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
+
         },
         (err) => {
             res.send({error: err})
@@ -85,7 +94,15 @@ router.put('/',requireJwt,(req, res)  => {
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: req.body.client.uid,
+                description: req.body.client.uid + ' updated the company with an id of ' + data,
+                message: 'updates company'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})

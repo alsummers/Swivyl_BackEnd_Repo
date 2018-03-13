@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Shareholders = db.sequelize.import('../models/shareholders.js');
+const Log = db.sequelize.import('../models/log.js')
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
@@ -12,16 +13,27 @@ router.post('/', requireJwt, (req, res)  => {
     var address = req.body.shareholders.address
     var ownership = req.body.shareholders.ownership
     var company = req.body.company.id
+    var owner = req.body.client.uid
+
 
     Shareholders.create({
         firstname: firstname,
         lastname: lastname,
         address: address,
         ownership: ownership,
-        companyId: company
+        companyId: company,
+        owner: owner
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a shareholder with an id of ' + successData.id,
+                message: 'created a shareholder'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})
@@ -77,19 +89,30 @@ router.put('/', requireJwt, (req, res)  => {
     var ownership = req.body.shareholders.ownership
     var company = req.body.company.id
     var data = req.body.shareholders.id
+    var owner = req.body.client.uid
+
 
     Shareholders.update({
         firstname: firstname,
         lastname: lastname,
         address: address,
         ownership: ownership,
-        companyId: company 
+        companyId: company,
+        owner: owner
     },
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
-        },
+            Log.create({
+                clientUid: owner,
+                description: owner + ' updated a shareholder with an id of ' + data,
+                message: 'updated a shareholder'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
+         },
         (err) => {
             res.send({error: err})
         }

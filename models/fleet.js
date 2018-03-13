@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     date_added: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     titled_to: {
         type: DataTypes.STRING,
@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
     companyId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    owner: {
+      type: DataTypes.UUID,
+      allowNull: false,
     }
   }, {
     classMethods: {

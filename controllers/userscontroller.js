@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const User = db.sequelize.import('../models/user');
+const Log = db.sequelize.import('../models/log.js')
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 require('../services/userpassport');
@@ -22,6 +23,8 @@ router.post('/register', (req, res)  => {
     var password = req.body.password
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
+    var owner = req.body.client.uid
+
 
     User.create({
         firstname: firstname,
@@ -29,10 +32,19 @@ router.post('/register', (req, res)  => {
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId 
+        companyId: companyId,
+        owner: owner 
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a user with an id of ' + successData.id,
+                message: 'created a user'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )   
         },
         (err) => {
             res.send({error: err})
@@ -120,18 +132,30 @@ router.put('/', requireJwt, (req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.id
+    var owner = req.body.client.uid
+
+
     User.update({
         firstname: firstname,
         lastname: lastname,
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId 
+        companyId: companyId,
+        owner: owner
     },
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' updated a user with an id of ' + data,
+                message: 'updated a user'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )   
         },
         (err) => {
             res.send({error: err})

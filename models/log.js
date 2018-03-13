@@ -1,19 +1,18 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var log = sequelize.define('log', {
-    id:{
-      type: DataTypes.INTEGER,
-      unique: true,
-      primaryKey: true
-    },
-    dateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    companyID: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+    clientUid: {
+        type: DataTypes.UUID,
+        allowNull: true
       },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     classMethods: {
       associate: function(models) {

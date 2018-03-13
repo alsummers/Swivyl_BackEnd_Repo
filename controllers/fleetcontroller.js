@@ -4,7 +4,7 @@ const Fleet = db.sequelize.import('../models/fleet.js');
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
-
+const Log = db.sequelize.import('../models/log.js')
 // CREATING FLEET
 router.post('/',requireJwt,(req, res)  => {
     var year = req.body.fleets.year
@@ -17,6 +17,7 @@ router.post('/',requireJwt,(req, res)  => {
     var titled_to = req.body.fleets.titledto
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
+    var owner = req.body.client.uid
 
     Fleet.create({
         year: year,
@@ -28,10 +29,19 @@ router.post('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId
+        companyId: companyId,
+        owner: owner
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a fleet with an id of ' + successData.id,
+                message: 'created a fleet'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})
@@ -111,6 +121,8 @@ router.put('/',requireJwt,(req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.fleets.id
+    var owner = req.body.client.uid
+
 
     Fleet.update({
         year: year,
@@ -122,12 +134,21 @@ router.put('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId
+        companyId: companyId,
+        owner: owner
     },
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' updated fleet with an id of ' + data,
+                message: 'updated a fleet'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})

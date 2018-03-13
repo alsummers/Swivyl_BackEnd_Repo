@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models/index');
 const Todo = db.sequelize.import('../models/todo.js');
+const Log = db.sequelize.import('../models/log.js')
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
@@ -9,13 +10,24 @@ router.post('/', requireJwt, (req, res) => {
     var company = req.body.company.id
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
+    var owner = req.body.client.uid
+
     Todo.create({
         companyID: company,
         dateDue: date,
-        description: desc
+        description: desc,
+        owner: owner
     }).then(
         (successData) => {
-            res.json({ data: successData })
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a to-do task with an id of ' + successData.id,
+                message: 'created a to-do task'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({ error: err })
@@ -65,14 +77,27 @@ router.put('/', requireJwt, (req, res) => {
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var data = req.body.todo.id
+    var owner = req.body.client.uid
+
+
     Todo.update({
         companyID: company,
         dateDue: date,
-        description: desc
-    },{ where: { id: data } }
+        description: desc,
+        owner: owner
+    },
+        { where: { id: data } }
     ).then(
         (successData) => {
-            res.json({ data: successData })
+            Log.create({
+                clientUid: owner,
+                description: owner + ' updated a to-do task with an id of ' + data,
+                message: 'updated a to-do task'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({ error: err })

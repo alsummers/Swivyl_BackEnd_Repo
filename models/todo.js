@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        owner: {
+            type: DataTypes.UUID,
+            allowNull: false,
+          }
 
     }, {
             classMethods: {
