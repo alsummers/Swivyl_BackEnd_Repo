@@ -2,6 +2,7 @@ const router = require('express').Router();
 const db = require('../models/index');
 const Property = db.sequelize.import('../models/property.js');
 const Entity = db.sequelize.import('../models/entity.js');
+const Log = db.sequelize.import('../models/log.js')
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
@@ -17,6 +18,8 @@ router.post('/', requireJwt, (req, res)  => {
     var location_inventory = req.body.properties.location_inventory
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
+    var owner = req.body.client.uid
+
 
     Property.create({
         address: address,
@@ -28,10 +31,19 @@ router.post('/', requireJwt, (req, res)  => {
         location_contents: location_contents,
         location_inventory: location_inventory,
         entityId: entityId,
-        companyId: companyId
+        companyId: companyId,
+        owner: owner
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a property with an id of ' + successData.id,
+                message: 'created a property'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})
@@ -111,6 +123,8 @@ router.put('/', requireJwt, (req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.properties.id
+    var owner = req.body.client.uid
+
 
     Property.update({
         address: address,
@@ -122,12 +136,21 @@ router.put('/', requireJwt, (req, res)  => {
         location_contents: location_contents,
         location_inventory: location_inventory,
         entityId: entityId,
-        companyId: companyId 
+        companyId: companyId,
+        owner: owner 
     },
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' updated a property with an id of ' + data,
+                message: 'updated a property'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})

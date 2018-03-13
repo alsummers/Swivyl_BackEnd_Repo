@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    owner: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    }
 
   }, {
     classMethods: {

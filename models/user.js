@@ -40,7 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     companyId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    owner: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   }, {
     classMethods: {
       associate: function(models) {

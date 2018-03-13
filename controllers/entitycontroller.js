@@ -6,18 +6,30 @@ const Entity = db.sequelize.import('../models/entity.js')
 const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
-
+const Log = db.sequelize.import('../models/log.js')
 // CREATING ENTITY
 router.post('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var company = req.body.company.id
+	var owner = req.body.client.uid
+
 
     Entity.create({
         entity_name: name,
-        companyId: company
+		companyId: company,
+		owner: owner
+		
     }).then(
         (successData) => {
-            res.json({data: successData})
+            Log.create({
+                clientUid: owner,
+                description: owner + ' created a entity with an id of ' + successData.id,
+                message: 'created entity'
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})
@@ -70,15 +82,26 @@ router.put('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var data = req.body.entity.id
     var company = req.body.company.id
+	var owner = req.body.client.uid
+
 
     Entity.update({
         entity_name: name,
-        companyId: company 
+		companyId: company,
+		owner: owner 
     },
     {where: {id: data}}
     ).then(
         (successData) => {
-            res.json({data: successData})
+			Log.create({
+                clientUid: owner,
+                description: owner + ' updated the entity with an id of ' + data,
+                message: 'upated the entity: ' + name
+            }).then(
+                (successLog) => {
+                    res.json({log : successLog})
+                }
+            )
         },
         (err) => {
             res.send({error: err})
