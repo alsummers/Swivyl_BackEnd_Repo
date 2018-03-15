@@ -13,7 +13,7 @@ router.post('/', requireJwt, (req, res)  => {
     var address = req.body.shareholders.address
     var ownership = req.body.shareholders.ownership
     var company = req.body.company.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Shareholders.create({
@@ -89,7 +89,7 @@ router.put('/', requireJwt, (req, res)  => {
     var ownership = req.body.shareholders.ownership
     var company = req.body.company.id
     var data = req.body.shareholders.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Shareholders.update({

@@ -17,7 +17,7 @@ router.post('/',requireJwt,(req, res)  => {
     var titled_to = req.body.fleets.titledto
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
     Fleet.create({
         year: year,
@@ -121,7 +121,7 @@ router.put('/',requireJwt,(req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.fleets.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Fleet.update({

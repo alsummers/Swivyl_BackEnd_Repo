@@ -14,7 +14,7 @@ const Log = db.sequelize.import('../models/log.js')
 router.post('/', requireJwt, (req, res)  => {
     var name = req.body.company.name
     var img = req.body.company.img
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
     Company.create({
         name: name,
@@ -23,8 +23,8 @@ router.post('/', requireJwt, (req, res)  => {
     }).then(
         (successData) => {
             Log.create({
-                clientUid: req.body.client.uid,
-                description: req.body.client.uid + ' created a company with an id of ' + successData.id,
+                clientUid: req.user.uid,
+                description: req.user.uid + ' created a company with an id of ' + successData.id,
                 message: 'created company'
             }).then(
                 (successLog) => {
@@ -42,7 +42,7 @@ router.post('/', requireJwt, (req, res)  => {
 //FINDING ALL COMPANIES OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
 router.get('/' ,requireJwt, function(req, res) {
-    var data = req.client.uid;
+    var data = req.user.uid;
 
 	Company.findAll(
         {
@@ -83,7 +83,7 @@ router.get('/:id',requireJwt, function(req, res) {
 router.put('/',requireJwt,(req, res)  => {
     var name = req.body.company.name
     var img = req.body.company.img
-    var owner = req.body.client.uid
+    var owner = req.user.uid
     var data = req.body.company.id
 
     Company.update({
@@ -95,8 +95,8 @@ router.put('/',requireJwt,(req, res)  => {
     ).then(
         (successData) => {
             Log.create({
-                clientUid: req.body.client.uid,
-                description: req.body.client.uid + ' updated the company with an id of ' + data,
+                clientUid: req.user.uid,
+                description: req.user.uid + ' updated the company with an id of ' + data,
                 message: 'updates company'
             }).then(
                 (successLog) => {
