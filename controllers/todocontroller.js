@@ -10,7 +10,7 @@ router.post('/', requireJwt, (req, res) => {
     var company = req.body.company.id
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
     Todo.create({
         companyID: company,
@@ -77,7 +77,7 @@ router.put('/', requireJwt, (req, res) => {
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var data = req.body.todo.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Todo.update({

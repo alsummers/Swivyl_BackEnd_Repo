@@ -11,7 +11,7 @@ const Log = db.sequelize.import('../models/log.js')
 router.post('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var company = req.body.company.id
-	var owner = req.body.client.uid
+	var owner = req.user.uid
 
 
     Entity.create({
@@ -22,8 +22,8 @@ router.post('/',requireJwt,(req, res)  => {
     }).then(
         (successData) => {
             Log.create({
-                clientUid: owner,
-                description: owner + ' created a entity with an id of ' + successData.id,
+                clientUid: req.user.uid,
+                description: req.user.uid + ' created a entity with an id of ' + successData.id,
                 message: 'created entity'
             }).then(
                 (successLog) => {
@@ -82,7 +82,7 @@ router.put('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var data = req.body.entity.id
     var company = req.body.company.id
-	var owner = req.body.client.uid
+	var owner = req.user.uid
 
 
     Entity.update({
@@ -94,8 +94,8 @@ router.put('/',requireJwt,(req, res)  => {
     ).then(
         (successData) => {
 			Log.create({
-                clientUid: owner,
-                description: owner + ' updated the entity with an id of ' + data,
+                clientUid: req.user.uid,
+                description: req.user.uid + ' updated the entity with an id of ' + data,
                 message: 'upated the entity: ' + name
             }).then(
                 (successLog) => {

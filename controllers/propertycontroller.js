@@ -18,7 +18,7 @@ router.post('/', requireJwt, (req, res)  => {
     var location_inventory = req.body.properties.location_inventory
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Property.create({
@@ -123,7 +123,7 @@ router.put('/', requireJwt, (req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.properties.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     Property.update({

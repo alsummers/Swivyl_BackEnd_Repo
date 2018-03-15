@@ -41,10 +41,11 @@ router.post('/register',(req, res)  => {
 router.post('/login', requireSignin , (req, res, next) => {
 
     const clientData = {
-        firstName : req.client.firstname,
-        lastName : req.client.lastname,
-        email : req.client.email,
-        token : createToken(req.client.uid)
+        firstName : req.user.firstname,
+        lastName : req.user.lastname,
+        email : req.user.email,
+        uid: req.user.uid,
+        token : createToken(req.user.uid)
     }
 
     res.json({message: "logged in successfully", client: clientData})

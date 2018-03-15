@@ -23,7 +23,7 @@ router.post('/register', (req, res)  => {
     var password = req.body.password
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     User.create({
@@ -132,7 +132,7 @@ router.put('/', requireJwt, (req, res)  => {
     var entityId = req.body.entity.id
     var companyId = req.body.company.id
     var data = req.body.id
-    var owner = req.body.client.uid
+    var owner = req.user.uid
 
 
     User.update({
