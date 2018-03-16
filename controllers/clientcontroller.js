@@ -36,7 +36,13 @@ router.post('/register',(req, res)  => {
     )    
 })
 
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile']
+}));
 
+router.get('/google/redirect', passport.authenticate('google'), (req,res) => {
+    res.send("you've reached the callback URL!")
+})
 /// login needs email and password
 router.post('/login', requireSignin , (req, res, next) => {
 

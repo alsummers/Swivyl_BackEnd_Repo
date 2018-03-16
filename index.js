@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('./models/index')
 const router = require('./router');
+const googleSetup = require('./services/authorizeClient')
 
 app.use(cors());
 app.use(bodyParser.urlencoded({
