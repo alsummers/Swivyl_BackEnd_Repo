@@ -16,7 +16,7 @@ const createToken = (userId) => {
     return jwt.encode({sub: userId , iat: currentTime}, process.env.JWTSECRET)
 } 
 
-router.post('/register', (req, res)  => {
+router.post('/register', requireJwt, (req, res)  => {
     var firstname = req.body.firstname
     var lastname = req.body.lastname
     var email = req.body.email
