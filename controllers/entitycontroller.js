@@ -27,7 +27,7 @@ router.post('/',requireJwt,(req, res)  => {
                 clientUid: req.user.uid,
                 description: req.user.uid + ' created a entity with an id of ' + successData.uid,
                 message: 'created entity',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -100,7 +100,7 @@ router.put('/',requireJwt,(req, res)  => {
                 clientUid: req.user.uid,
                 description: req.user.uid + ' updated the entity with an id of ' + data,
                 message: 'upated the entity: ' + name,
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})

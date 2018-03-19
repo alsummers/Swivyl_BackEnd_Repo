@@ -22,7 +22,7 @@ router.post('/register', requireJwt, (req, res)  => {
     var email = req.body.email
     var password = req.body.password
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var owner = req.user.uid
 
 
@@ -32,7 +32,7 @@ router.post('/register', requireJwt, (req, res)  => {
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner 
     }).then(
         (successData) => {
@@ -40,7 +40,7 @@ router.post('/register', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' created a user with an id of ' + successData.uid,
                 message: 'created a user',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -131,7 +131,7 @@ router.put('/', requireJwt, (req, res)  => {
     var email = req.body.email
     var password = req.body.password
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var data = req.body.uid
     var owner = req.user.uid
 
@@ -142,7 +142,7 @@ router.put('/', requireJwt, (req, res)  => {
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     },
     {where: {uid: data}}
@@ -152,7 +152,7 @@ router.put('/', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' updated a user with an id of ' + data,
                 message: 'updated a user',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})

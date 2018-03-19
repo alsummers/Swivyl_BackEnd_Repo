@@ -29,7 +29,7 @@ router.post('/', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' created a shareholder with an id of ' + successData.uid,
                 message: 'created a shareholder',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -108,7 +108,7 @@ router.put('/', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' updated a shareholder with an id of ' + data,
                 message: 'updated a shareholder',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
