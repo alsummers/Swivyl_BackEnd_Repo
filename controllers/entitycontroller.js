@@ -25,8 +25,9 @@ router.post('/',requireJwt,(req, res)  => {
         (successData) => {
             Log.create({
                 clientUid: req.user.uid,
-                description: req.user.uid + ' created a entity with an id of ' + successData.id,
-                message: 'created entity'
+                description: req.user.uid + ' created a entity with an id of ' + successData.uid,
+                message: 'created entity',
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -83,7 +84,7 @@ router.get('/:uid', requireJwt,function(req, res) {
 router.put('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
     var data = req.body.entity.uid
-    var company = req.body.company.id
+    var company = req.body.company.uid
 	var owner = req.user.uid
 
 
@@ -92,13 +93,14 @@ router.put('/',requireJwt,(req, res)  => {
 		companyId: company,
 		owner: owner 
     },
-    {where: {id: data}}
+    {where: {uid: data}}
     ).then(
         (successData) => {
 			Log.create({
                 clientUid: req.user.uid,
                 description: req.user.uid + ' updated the entity with an id of ' + data,
-                message: 'upated the entity: ' + name
+                message: 'upated the entity: ' + name,
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
