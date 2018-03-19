@@ -82,7 +82,7 @@ router.put('/', requireJwt, (req, res) => {
 
 
     Todo.update({
-        companyID: company,
+        companyId: company,
         dateDue: date,
         description: desc,
         owner: owner
