@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     firstname: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: ["^[a-z]+$",'i'],  
+        msg: "name must contain characters"
+      }
     },
     lastname: {
       type: DataTypes.STRING,
