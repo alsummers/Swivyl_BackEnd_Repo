@@ -52,7 +52,7 @@ router.get('/' ,requireJwt, function(req, res) {
 	.then(
 		//success
 		function findAllSuccess(data) {
-			// console.log(data);
+			console.log(data);
 			res.json(data);
 		},
 		//failure

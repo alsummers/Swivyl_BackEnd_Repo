@@ -40,11 +40,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     },
     entityId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     companyId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     owner: {
