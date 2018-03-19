@@ -14,8 +14,9 @@ const createToken = (clientId) => {
 } 
 
 router.post('/register',(req, res)  => {
-    
-    Client.create({
+    if(req.body.password.length > 5){
+    Client.create(
+        {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -33,7 +34,9 @@ router.post('/register',(req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    )} else {
+        res.send('Password must have more than 5 characters and contain no spaces.')
+    }    
 })
 
 
