@@ -7,7 +7,7 @@ require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
 // CREATING ENTITY
 router.post('/', requireJwt, (req, res) => {
-    var company = req.body.company.uid
+    var company = req.body.company.id
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var owner = req.user.uid
@@ -23,7 +23,7 @@ router.post('/', requireJwt, (req, res) => {
                 clientUid: owner,
                 description: owner + ' created a to-do task with an id of ' + successData.uid,
                 message: 'created a to-do task',
-                companyID: companyID
+                companyID: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -94,7 +94,7 @@ router.put('/', requireJwt, (req, res) => {
                 clientUid: owner,
                 description: owner + ' updated a to-do task with an id of ' + data,
                 message: 'updated a to-do task',
-                companyId: companyID
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})

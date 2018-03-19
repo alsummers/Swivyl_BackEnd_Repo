@@ -17,7 +17,7 @@ router.post('/', requireJwt, (req, res)  => {
     var location_contents = req.body.properties.location_contents
     var location_inventory = req.body.properties.location_inventory
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var owner = req.user.uid
 
 
@@ -31,7 +31,7 @@ router.post('/', requireJwt, (req, res)  => {
         location_contents: location_contents,
         location_inventory: location_inventory,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     }).then(
         (successData) => {
@@ -39,7 +39,7 @@ router.post('/', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' created a property with an id of ' + successData.uid,
                 message: 'created a property',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -122,7 +122,7 @@ router.put('/', requireJwt, (req, res)  => {
     var location_contents = req.body.properties.location_contents
     var location_inventory = req.body.properties.location_inventory
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var data = req.body.properties.uid
     var owner = req.user.uid
 
@@ -137,7 +137,7 @@ router.put('/', requireJwt, (req, res)  => {
         location_contents: location_contents,
         location_inventory: location_inventory,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner 
     },
     {where: {uid: data}}
@@ -147,7 +147,7 @@ router.put('/', requireJwt, (req, res)  => {
                 clientUid: owner,
                 description: owner + ' updated a property with an id of ' + data,
                 message: 'updated a property',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})

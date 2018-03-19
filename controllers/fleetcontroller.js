@@ -16,7 +16,7 @@ router.post('/',requireJwt,(req, res)  => {
     var date_added = req.body.fleets.date
     var titled_to = req.body.fleets.titledto
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var owner = req.user.uid
 
     Fleet.create({
@@ -29,7 +29,7 @@ router.post('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     }).then(
         (successData) => {
@@ -37,7 +37,7 @@ router.post('/',requireJwt,(req, res)  => {
                 clientUid: owner,
                 description: owner + ' created a fleet with an id of ' + successData.uid,
                 message: 'created a fleet',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -120,7 +120,7 @@ router.put('/',requireJwt,(req, res)  => {
     var date_added = req.body.fleets.date
     var titled_to = req.body.fleets.titledto
     var entityId = req.body.entity.uid
-    var companyId = req.body.company.uid
+    var company = req.body.company.uid
     var data = req.body.fleets.uid
     var owner = req.user.uid
 
@@ -135,7 +135,7 @@ router.put('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     },
     {where: {uid: data}}
@@ -145,7 +145,7 @@ router.put('/',requireJwt,(req, res)  => {
                 clientUid: owner,
                 description: owner + ' updated fleet with an id of ' + data,
                 message: 'updated a fleet',
-                companyId: companyId
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
