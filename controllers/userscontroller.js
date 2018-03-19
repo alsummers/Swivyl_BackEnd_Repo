@@ -24,7 +24,9 @@ router.post('/register', requireJwt, (req, res)  => {
     var entityId = req.body.entity.uid
     var company = req.body.company.uid
     var owner = req.user.uid
-
+    var letters = /^[A-Za-z]+$/;
+  
+    if(req.body.password.length > 5 && req.body.firstname.match(letters) && req.body.lastname.match(letters)){
 
     User.create({
         firstname: firstname,
@@ -50,7 +52,10 @@ router.post('/register', requireJwt, (req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    ) 
+    } else {
+        res.send('Names must be letters only. Password must have more than 5 characters and contain no spaces.')
+    }
 })
 
 router.post('/login', requireSignin , (req, res, next) => {

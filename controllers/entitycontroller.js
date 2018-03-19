@@ -14,7 +14,9 @@ router.post('/',requireJwt,(req, res)  => {
     var owner = req.user.uid
     
     
-
+    var letters = /([A-Za-z])+( [A-Za-z]+)/;
+  
+    if(req.body.entity.name.match(letters)){
 
     Entity.create({
         entity_name: name,
@@ -37,7 +39,10 @@ router.post('/',requireJwt,(req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    )
+} else {
+    res.send('Letters only')
+}    
 })
 
 //FINDING ALL ENTITIES OF SPECIFIC CLIENT
