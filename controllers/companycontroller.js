@@ -6,6 +6,7 @@ const passport = require('passport');
 require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
 const Log = db.sequelize.import('../models/log.js')
+const multer = require('multer')
 
 
 
@@ -81,13 +82,11 @@ router.get('/:id',requireJwt, function(req, res) {
 
 // UPDATING COMPANY
 router.put('/',requireJwt,(req, res)  => {
-    var name = req.body.company.name
-    var img = req.body.company.img
+    var img = req.body
     var owner = req.user.uid
-    var data = req.body.company.id
+    
 
     Company.update({
-        name: name,
         img: img,
         owner: owner 
     },
