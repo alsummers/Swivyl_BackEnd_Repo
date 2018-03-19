@@ -7,13 +7,13 @@ require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
 // CREATING ENTITY
 router.post('/', requireJwt, (req, res) => {
-    var company = req.body.company.id
+    var company = req.body.company.uid
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var owner = req.user.uid
 
     Todo.create({
-        companyID: company,
+        companyId: company,
         dateDue: date,
         description: desc,
         owner: owner
@@ -23,7 +23,7 @@ router.post('/', requireJwt, (req, res) => {
                 clientUid: owner,
                 description: owner + ' created a to-do task with an id of ' + successData.uid,
                 message: 'created a to-do task',
-                companyID: company
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -37,11 +37,11 @@ router.post('/', requireJwt, (req, res) => {
 })
 //FINDING ALL TODO ASSIGNMENTS OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/all/:companyID', requireJwt, function (req, res) {
-    var data = req.params.companyID;
+router.get('/all/:companyId', requireJwt, function (req, res) {
+    var data = req.params.companyId;
     Todo.findAll(
         {
-            where: { companyID: data }
+            where: { companyId: data }
         }
     )
         .then(
