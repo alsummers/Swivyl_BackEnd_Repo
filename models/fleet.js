@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var fleets = sequelize.define('fleets', {
+    uid:{
+      type: DataTypes.UUID,
+      unique: true,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
     year: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -34,11 +40,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     },
     entityId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     companyId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     owner: {

@@ -7,6 +7,7 @@ module.exports = app => {
     app.use('/api/fleet', require('./controllers/fleetcontroller'));
     app.use('/api/todo', require('./controllers/todocontroller'));
     app.use('/api/shareholders', require('./controllers/shareholderscontroller'));
+    app.use('/api/log', require('./controllers/logcontroller'));
 
 
     // Test page

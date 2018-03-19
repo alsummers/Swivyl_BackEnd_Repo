@@ -1,12 +1,18 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     var todo = sequelize.define('todo', {
+        uid:{
+            type: DataTypes.UUID,
+            unique: true,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
+          },
         companyID: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false,
         },
         dateDue: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
         },
         description: {

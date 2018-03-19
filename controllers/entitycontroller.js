@@ -10,8 +10,10 @@ const Log = db.sequelize.import('../models/log.js')
 // CREATING ENTITY
 router.post('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
-    var company = req.body.company.id
-	var owner = req.user.uid
+    var company = req.body.company.uid
+    var owner = req.user.uid
+    
+    
 
 
     Entity.create({
@@ -23,8 +25,9 @@ router.post('/',requireJwt,(req, res)  => {
         (successData) => {
             Log.create({
                 clientUid: req.user.uid,
-                description: req.user.uid + ' created a entity with an id of ' + successData.id,
-                message: 'created entity'
+                description: req.user.uid + ' created a entity with an id of ' + successData.uid,
+                message: 'created entity',
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -61,12 +64,12 @@ router.get('/all/:companyId' , requireJwt,function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', requireJwt,function(req, res) {
-	var data = req.params.id;
-	// console.log(data); here for testing purposes
+router.get('/:uid', requireJwt,function(req, res) {
+	var data = req.params.uid;
+	console.log("GEEEEEEEEEET", data.uid);
 	Entity
 	.findOne({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
@@ -80,8 +83,8 @@ router.get('/:id', requireJwt,function(req, res) {
 // UPDATING COMPANY
 router.put('/',requireJwt,(req, res)  => {
     var name = req.body.entity.name
-    var data = req.body.entity.id
-    var company = req.body.company.id
+    var data = req.body.entity.uid
+    var company = req.body.company.uid
 	var owner = req.user.uid
 
 
@@ -90,13 +93,14 @@ router.put('/',requireJwt,(req, res)  => {
 		companyId: company,
 		owner: owner 
     },
-    {where: {id: data}}
+    {where: {uid: data}}
     ).then(
         (successData) => {
 			Log.create({
                 clientUid: req.user.uid,
                 description: req.user.uid + ' updated the entity with an id of ' + data,
-                message: 'upated the entity: ' + name
+                message: 'upated the entity: ' + name,
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -110,12 +114,13 @@ router.put('/',requireJwt,(req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id',requireJwt, function(req, res) {
-	var data = req.params.id;
-	// console.log(data); here for testing purposes
+router.delete('/:uid',requireJwt, function(req, res) {
+    console.log("+++++++DATA+++++++", req.params)
+	var data = req.params.uid;
+    
 	Entity
 	.destroy({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);

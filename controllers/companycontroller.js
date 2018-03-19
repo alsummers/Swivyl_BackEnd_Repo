@@ -25,8 +25,9 @@ router.post('/', requireJwt, (req, res)  => {
         (successData) => {
             Log.create({
                 clientUid: req.user.uid,
-                description: req.user.uid + ' created a company with an id of ' + successData.id,
-                message: 'created company'
+                description: req.user.uid + ' created a company with an id of ' + successData.uid,
+                message: 'created company',
+                companyId: successData.uid
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -53,7 +54,7 @@ router.get('/' ,requireJwt, function(req, res) {
 	.then(
 		//success
 		function findAllSuccess(data) {
-			// console.log(data);
+			console.log(data);
 			res.json(data);
 		},
 		//failure
@@ -64,12 +65,12 @@ router.get('/' ,requireJwt, function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id',requireJwt, function(req, res) {
-	var data = req.params.id;
+router.get('/:uid',requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Company
 	.findOne({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
@@ -84,7 +85,7 @@ router.get('/:id',requireJwt, function(req, res) {
 router.put('/',requireJwt,(req, res)  => {
     var img = req.body
     var owner = req.user.uid
-    
+    var data = req.body.company.uid
 
     Company.update({
         img: img,
@@ -96,7 +97,8 @@ router.put('/',requireJwt,(req, res)  => {
             Log.create({
                 clientUid: req.user.uid,
                 description: req.user.uid + ' updated the company with an id of ' + data,
-                message: 'updates company'
+                message: 'updates company',
+                companyId: successData.uid
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -110,12 +112,12 @@ router.put('/',requireJwt,(req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id',requireJwt, function(req, res) {
-	var data = req.params.id;
+router.delete('/:uid',requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Company
 	.destroy({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);

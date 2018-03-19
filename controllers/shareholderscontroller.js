@@ -12,7 +12,7 @@ router.post('/', requireJwt, (req, res)  => {
     var lastname = req.body.shareholders.lastname
     var address = req.body.shareholders.address
     var ownership = req.body.shareholders.ownership
-    var company = req.body.company.id
+    var company = req.body.company.uid
     var owner = req.user.uid
 
 
@@ -27,8 +27,9 @@ router.post('/', requireJwt, (req, res)  => {
         (successData) => {
             Log.create({
                 clientUid: owner,
-                description: owner + ' created a shareholder with an id of ' + successData.id,
-                message: 'created a shareholder'
+                description: owner + ' created a shareholder with an id of ' + successData.uid,
+                message: 'created a shareholder',
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -65,12 +66,12 @@ router.get('/all/:companyId' , requireJwt, function(req, res) {
 });
 
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', requireJwt, function(req, res) {
-	var data = req.params.id;
+router.get('/:uid', requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Shareholders
 	.findOne({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
@@ -87,8 +88,8 @@ router.put('/', requireJwt, (req, res)  => {
     var lastname = req.body.shareholders.lastname
     var address = req.body.shareholders.address
     var ownership = req.body.shareholders.ownership
-    var company = req.body.company.id
-    var data = req.body.shareholders.id
+    var company = req.body.company.uid
+    var data = req.body.shareholders.uid
     var owner = req.user.uid
 
 
@@ -100,13 +101,14 @@ router.put('/', requireJwt, (req, res)  => {
         companyId: company,
         owner: owner
     },
-    {where: {id: data}}
+    {where: {uid: data}}
     ).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
                 description: owner + ' updated a shareholder with an id of ' + data,
-                message: 'updated a shareholder'
+                message: 'updated a shareholder',
+                companyId: companyId
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -120,12 +122,12 @@ router.put('/', requireJwt, (req, res)  => {
 });
 
 // DELETE SPECIFIC COMPANY
-router.delete('/:id', requireJwt, function(req, res) {
-	var data = req.params.id;
+router.delete('/:uid', requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Shareholders
 	.destroy({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
