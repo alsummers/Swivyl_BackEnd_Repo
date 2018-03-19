@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var log = sequelize.define('log', {
+    uid:{
+      type: DataTypes.UUID,
+      unique: true,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
     clientUid: {
         type: DataTypes.UUID,
         allowNull: true

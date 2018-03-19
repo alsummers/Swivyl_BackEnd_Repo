@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var company = sequelize.define('company', {
+    uid:{
+      type: DataTypes.UUID,
+      unique: true,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
