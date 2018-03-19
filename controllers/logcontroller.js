@@ -7,12 +7,12 @@ require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
 const Log = db.sequelize.import('../models/log.js')
 
-router.get('/all/:companyId' , requireJwt,function(req, res) {
-    var data = req.params.companyId;
+router.get('/all/:companyUid' , requireJwt,function(req, res) {
+    var data = req.params.clientUid;
 
 	Log.findAll(
         {
-            where: {companyId: data}
+            where: {clientUid: data}
         }
     )
 	.then(
