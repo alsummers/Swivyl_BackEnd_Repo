@@ -120,7 +120,7 @@ router.put('/',requireJwt,(req, res)  => {
 
 // DELETE SPECIFIC COMPANY
 router.delete('/:uid',requireJwt, function(req, res) {
-    console.log("+++++++DATA+++++++", req.params)
+
 	var data = req.params.uid;
     
 	Entity
