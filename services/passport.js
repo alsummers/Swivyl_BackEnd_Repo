@@ -6,6 +6,16 @@ const Client = db.import('../models/client.js');
 const bcrypt = require('bcryptjs');
 const keys = require('../config/keys')
 
+passport.serializeUser((user, done) => { 
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+        done(err, user);
+    });
+});
+
 passport.use(new LocalStrategy( 
     {usernameField: 'email'},
     (email, password, done) =>{        
@@ -25,26 +35,20 @@ passport.use(
     new GoogleStrategy({
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'http://localhost:4200/#/profile/company-welcome'
+        callbackURL: 'http://localhost:3000/auth/google/callback', 
     }, (token, tokenSecret, profile, done) => {
-        console.log(profile)
-        // Client.findOrCreate({email: profile.email}, (err, user) => {
+        console.log('PROFILELELELEL', profile)
+        console.log('EMAIILALALA', profile.emails[0].value)
+        // Client.create({email: profile._json.name}, (err, user) => {
         //      return done(err, user)
         // })
-        Client.findOrcreate({googleId: profile.id}).then(
-                (successData) => {
-                    console.log(successData)
-                        const clientData = {
-                                email : successData.email,
-                                token : createToken(successData.token)
-                            }
-                            res.json({message: `Welcome ${clientData.email}`, data: clientData})
+        Client.findOne({ where: {email: profile.emails[0].value}}).then(
+            (client) => {
+                if(!client) return done(null, false, { message: 'Incorrect email.' });
                         },
-                        (err) => {
-                                res.send({error: err, Client})
-                        
-                            }
+                        (err) => done(err)
                         )
+                        done(null, profile)
         }
     ))
 
