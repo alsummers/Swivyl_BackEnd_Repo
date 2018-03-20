@@ -8,6 +8,8 @@ module.exports = app => {
     app.use('/api/todo', require('./controllers/todocontroller'));
     app.use('/api/shareholders', require('./controllers/shareholderscontroller'));
     const passport = require('passport');
+    app.use('/api/log', require('./controllers/logcontroller'));
+
 
 
     // Test page

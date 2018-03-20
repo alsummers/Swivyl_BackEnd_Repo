@@ -15,10 +15,13 @@ router.post('/',requireJwt,(req, res)  => {
     var garaging_zip = req.body.fleets.gzip
     var date_added = req.body.fleets.date
     var titled_to = req.body.fleets.titledto
-    var entityId = req.body.entity.id
-    var companyId = req.body.company.id
+    var entityId = req.body.entity.uid
+    var company = req.body.company.uid
     var owner = req.user.uid
+    var letters = /^[a-zA-Z0-9\s-]+$/
 
+    if(req.body.fleets.year.match(letters) && req.body.fleets.make.match(letters) && req.body.fleets.model.match(letters) && req.body.fleets.vin.match(letters) && req.body.fleets.driver.match(letters)
+    && req.body.fleets.gzip.match(letters) && req.body.fleets.date.match(letters) && req.body.fleets.titledto.match(letters)){
     Fleet.create({
         year: year,
         make: make,
@@ -29,14 +32,15 @@ router.post('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     }).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
-                description: owner + ' created a fleet with an id of ' + successData.id,
-                message: 'created a fleet'
+                description: owner + ' created a fleet with an id of ' + successData.uid,
+                message: 'created a fleet',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -46,7 +50,10 @@ router.post('/',requireJwt,(req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    )
+} else {
+    res.send("Only letters A-Z, and numbers 0-9 allowed")
+}    
 })
 
 //FINDING ALL FLEETS OF SPECIFIC ENTITY
@@ -92,12 +99,12 @@ router.get('/company/:companyId' , requireJwt,function(req, res) {
 });
 
 //FINDING ONE SPECIFIC FlEET
-router.get('/:id', requireJwt,function(req, res) {
-	var data = req.params.id;
+router.get('/:uid', requireJwt,function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Fleet
 	.findOne({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
@@ -118,9 +125,9 @@ router.put('/',requireJwt,(req, res)  => {
     var garaging_zip = req.body.fleets.gzip
     var date_added = req.body.fleets.date
     var titled_to = req.body.fleets.titledto
-    var entityId = req.body.entity.id
-    var companyId = req.body.company.id
-    var data = req.body.fleets.id
+    var entityId = req.body.entity.uid
+    var company = req.body.company.uid
+    var data = req.body.fleets.uid
     var owner = req.user.uid
 
 
@@ -134,16 +141,17 @@ router.put('/',requireJwt,(req, res)  => {
         date_added: date_added,
         titled_to: titled_to,
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     },
-    {where: {id: data}}
+    {where: {uid: data}}
     ).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
                 description: owner + ' updated fleet with an id of ' + data,
-                message: 'updated a fleet'
+                message: 'updated a fleet',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -157,12 +165,12 @@ router.put('/',requireJwt,(req, res)  => {
 });
 
 // DELETE SPECIFIC FLEET
-router.delete('/:id', requireJwt,function(req, res) {
-	var data = req.params.id;
+router.delete('/:uid', requireJwt,function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	Fleet
 	.destroy({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);

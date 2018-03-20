@@ -15,8 +15,11 @@ const createToken = (clientId) => {
 } 
 
 router.post('/register',(req, res)  => {
-    
-    Client.create({
+    var letters = /^[A-Za-z_'_-]+$/;
+  
+    if(req.body.password.length > 5 && req.body.firstname.match(letters) && req.body.lastname.match(letters)){
+    Client.create(
+        {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -34,7 +37,9 @@ router.post('/register',(req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    )} else {
+        res.send('Names must be letters only. Password must have more than 5 characters and contain no spaces.')
+    }    
 })
 
 router.get('/auth/google', passport.authenticate('google', {

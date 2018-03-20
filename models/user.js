@@ -1,9 +1,19 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var users = sequelize.define('users', {
+    uid:{
+      type: DataTypes.UUID,
+      unique: true,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
     firstname: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: ["^[a-z]+$",'i'],  
+        msg: "name must contain characters"
+      }
     },
     lastname: {
       type: DataTypes.STRING,
@@ -34,11 +44,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     entityId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     companyId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     owner: {

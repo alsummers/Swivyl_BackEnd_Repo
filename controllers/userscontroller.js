@@ -21,10 +21,12 @@ router.post('/register', requireJwt, (req, res)  => {
     var lastname = req.body.lastname
     var email = req.body.email
     var password = req.body.password
-    var entityId = req.body.entity.id
-    var companyId = req.body.company.id
+    var entityId = req.body.entity.uid
+    var company = req.body.company.uid
     var owner = req.user.uid
-
+    var letters = /^[A-Za-z_'_-]+$/;
+  
+    if(req.body.password.length > 5 && req.body.firstname.match(letters) && req.body.lastname.match(letters)){
 
     User.create({
         firstname: firstname,
@@ -32,14 +34,15 @@ router.post('/register', requireJwt, (req, res)  => {
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner 
     }).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
-                description: owner + ' created a user with an id of ' + successData.id,
-                message: 'created a user'
+                description: owner + ' created a user with an id of ' + successData.uid,
+                message: 'created a user',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -49,7 +52,10 @@ router.post('/register', requireJwt, (req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    ) 
+    } else {
+        res.send('Names must be letters only. Password must have more than 5 characters and contain no spaces.')
+    }
 })
 
 router.post('/login', requireSignin , (req, res, next) => {
@@ -58,7 +64,7 @@ router.post('/login', requireSignin , (req, res, next) => {
         firstName : req.user.firstname,
         lastName : req.user.lastname,
         email : req.user.email,
-        token : createToken(req.user.id),
+        token : createToken(req.user.uid),
     }
 
     res.json({message: "logged in successfully", user: userData})
@@ -107,12 +113,12 @@ router.get('/company/:companyId' , requireJwt, function(req, res) {
 });
 
 //FINDING ONE SPECIFIC USER
-router.get('/:id', requireJwt, function(req, res) {
-	var data = req.params.id;
+router.get('/:uid', requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	User
 	.findOne({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);
@@ -129,9 +135,9 @@ router.put('/', requireJwt, (req, res)  => {
     var lastname = req.body.lastname
     var email = req.body.email
     var password = req.body.password
-    var entityId = req.body.entity.id
-    var companyId = req.body.company.id
-    var data = req.body.id
+    var entityId = req.body.entity.uid
+    var company = req.body.company.uid
+    var data = req.body.uid
     var owner = req.user.uid
 
 
@@ -141,16 +147,17 @@ router.put('/', requireJwt, (req, res)  => {
         email: email,
         password: bcrypt.hashSync(password),
         entityId: entityId,
-        companyId: companyId,
+        companyId: company,
         owner: owner
     },
-    {where: {id: data}}
+    {where: {uid: data}}
     ).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
                 description: owner + ' updated a user with an id of ' + data,
-                message: 'updated a user'
+                message: 'updated a user',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -164,12 +171,12 @@ router.put('/', requireJwt, (req, res)  => {
 });
 
 // DELETE SPECIFIC USER
-router.delete('/:id', requireJwt, function(req, res) {
-	var data = req.params.id;
+router.delete('/:uid', requireJwt, function(req, res) {
+	var data = req.params.uid;
 	// console.log(data); here for testing purposes
 	User
 	.destroy({
-		where: {id: data}
+		where: {uid: data}
 	}).then(
 		function getSuccess(updateData) {
 			res.json(updateData);

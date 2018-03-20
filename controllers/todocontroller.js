@@ -7,13 +7,16 @@ require('../services/authorizeClient');
 const requireJwt = passport.authenticate('jwt', { session: false})
 // CREATING ENTITY
 router.post('/', requireJwt, (req, res) => {
-    var company = req.body.company.id
+    var company = req.body.company.uid
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var owner = req.user.uid
+    var letters = /^[a-zA-Z0-9\s-]+$/
+    
+    if(req.body.todo.dateDue.match(letters) && req.body.todo.description.match(letters)){
 
     Todo.create({
-        companyID: company,
+        companyId: company,
         dateDue: date,
         description: desc,
         owner: owner
@@ -21,8 +24,9 @@ router.post('/', requireJwt, (req, res) => {
         (successData) => {
             Log.create({
                 clientUid: owner,
-                description: owner + ' created a to-do task with an id of ' + successData.id,
-                message: 'created a to-do task'
+                description: owner + ' created a to-do task with an id of ' + successData.uid,
+                message: 'created a to-do task',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -33,14 +37,17 @@ router.post('/', requireJwt, (req, res) => {
             res.send({ error: err })
         }
     )
+} else {
+    res.send("Invalid characters")
+}
 })
 //FINDING ALL TODO ASSIGNMENTS OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
-router.get('/all/:companyID', requireJwt, function (req, res) {
-    var data = req.params.companyID;
+router.get('/all/:companyId', requireJwt, function (req, res) {
+    var data = req.params.companyId;
     Todo.findAll(
         {
-            where: { companyID: data }
+            where: { companyId: data }
         }
     )
         .then(
@@ -56,12 +63,12 @@ router.get('/all/:companyID', requireJwt, function (req, res) {
         );
 });
 //FINDING ONE SPECIFIC COMPANY
-router.get('/:id', requireJwt, function (req, res) {
-    var data = req.params.id;
+router.get('/:uid', requireJwt, function (req, res) {
+    var data = req.params.uid;
     // console.log(data); here for testing purposes
     Todo
         .findOne({
-            where: { id: data }
+            where: { uid: data }
         }).then(
             function getSuccess(updateData) {
                 res.json(updateData);
@@ -73,26 +80,27 @@ router.get('/:id', requireJwt, function (req, res) {
 });
 // UPDATING TODO
 router.put('/', requireJwt, (req, res) => {
-    var company = req.body.company.id
+    var company = req.body.company.uid
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
-    var data = req.body.todo.id
+    var data = req.body.todo.uid
     var owner = req.user.uid
 
 
     Todo.update({
-        companyID: company,
+        companyId: company,
         dateDue: date,
         description: desc,
         owner: owner
     },
-        { where: { id: data } }
+        { where: { uid: data } }
     ).then(
         (successData) => {
             Log.create({
                 clientUid: owner,
                 description: owner + ' updated a to-do task with an id of ' + data,
-                message: 'updated a to-do task'
+                message: 'updated a to-do task',
+                companyId: company
             }).then(
                 (successLog) => {
                     res.json({log : successLog})
@@ -105,12 +113,12 @@ router.put('/', requireJwt, (req, res) => {
     )
 });
 // DELETE SPECIFIC TODO ASSIGNMENT
-router.delete('/:id', requireJwt, function (req, res) {
-    var data = req.params.id;
+router.delete('/:uid', requireJwt, function (req, res) {
+    var data = req.params.uid;
     // console.log(data); here for testing purposes
     Todo
         .destroy({
-            where: { id: data }
+            where: { uid: data }
         }).then(
             function getSuccess(updateData) {
                 res.json(updateData);
