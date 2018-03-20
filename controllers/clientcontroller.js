@@ -37,13 +37,13 @@ router.post('/register',(req, res)  => {
     )    
 })
 
-router.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile']
-}));
+// router.get('/auth/google', passport.authenticate('google', {
+//     scope: ['https://www.googleapis.com/auth/plus.login']
+// }));
 
-router.get('/auth/google/callback', passport.authenticate('google'), (req,res) => {
-    res.send("you've reached the callback URL!")
-})
+// router.get('/auth/google/callback', passport.authenticate('google'), (req,res) => {
+//     res.send("you've reached the callback URL!")
+// })
 
 router.get('/all' , requireJwt,function(req, res) {
 
