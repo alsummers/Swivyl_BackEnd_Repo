@@ -28,24 +28,24 @@ passport.use(
         callbackURL: '/profile/company-welcome'
     }, (token, tokenSecret, profile, done) => {
         console.log(profile)
-        Client.findOrCreate({email: profile.email}, (err, user) => {
-             return done(err, user)
-        })
-    }
-))
-        // Client.findOrcreate({googleId: profile.id}).then(
-        //     (successData) => {
-        //         const clientData = {
-        //             email : successData.email,
-        //             token : createToken(successData.uid)
-        //         }
-        //         res.json({message: `Welcome ${clientData.firstname}`, data: clientData})
-        //     },
-        //     (err) => {
-        //         res.send({error: err, Client})
-   
-        //     }
-        // )
+        // Client.findOrCreate({email: profile.email}, (err, user) => {
+        //      return done(err, user)
+        // })
+        Client.findOrcreate({googleId: profile.id}).then(
+                (successData) => {
+                        const clientData = {
+                                email : successData.email,
+                                token : createToken(successData.token)
+                            }
+                            res.json({message: `Welcome ${clientData.email}`, data: clientData})
+                        },
+                        (err) => {
+                                res.send({error: err, Client})
+                        
+                            }
+                        )
+        }
+    ))
 
 
 module.exports = passport;

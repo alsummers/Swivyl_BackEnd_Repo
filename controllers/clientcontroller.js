@@ -6,6 +6,7 @@ const passport = require('passport');
 require('../services/passport');
 const requireSignin = passport.authenticate('local', {session: false});
 const jwt = require('jwt-simple');
+const requireJwt = passport.authenticate('jwt', { session: false})
 
 
 const createToken = (clientId) => {
@@ -43,6 +44,27 @@ router.get('/google', passport.authenticate('google', {
 router.get('/google/redirect', passport.authenticate('google'), (req,res) => {
     res.send("you've reached the callback URL!")
 })
+
+router.get('/all/:companyId' , requireJwt,function(req, res) {
+    var data = req.params.companyId;
+
+	Client.findAll(
+        {
+            where: {companyId: data}
+        }
+    )
+	.then(
+		//success
+		function findAllSuccess(data) {
+			// console.log(data);
+			res.json(data);
+		},
+		//failure
+		function findAllError(err) {
+			res.send(500, err.message);
+		}
+	);
+});
 /// login needs email and password
 router.post('/login', requireSignin , (req, res, next) => {
 
