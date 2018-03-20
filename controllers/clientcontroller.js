@@ -42,21 +42,18 @@ router.post('/register',(req, res)  => {
     }    
 })
 
-router.get('/google', passport.authenticate('google', {
+router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile']
 }));
 
-router.get('/google/redirect', passport.authenticate('google'), (req,res) => {
+router.get('/auth/google/callback', passport.authenticate('google'), (req,res) => {
     res.send("you've reached the callback URL!")
 })
 
-router.get('/all/:companyId' , requireJwt,function(req, res) {
-    var data = req.params.companyId;
+router.get('/all' , requireJwt,function(req, res) {
 
 	Client.findAll(
-        {
-            where: {companyId: data}
-        }
+       
     )
 	.then(
 		//success

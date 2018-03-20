@@ -1,6 +1,6 @@
 const passport = require('passport'); 
 const LocalStrategy = require('passport-local').Strategy; 
-const GoogleStrategy = require('passport-google-oauth').OAuthStrategy
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const db = require('../models/index').sequelize; 
 const Client = db.import('../models/client.js');
 const bcrypt = require('bcryptjs');
@@ -23,9 +23,9 @@ passport.use(new LocalStrategy(
 
 passport.use(
     new GoogleStrategy({
-        consumerKey: keys.google.consumerKey,
-        consumerSecret: keys.google.consumerSecret,
-        callbackURL: '/profile/company-welcome'
+        clientID: keys.google.clientID,
+        clientSecret: keys.google.clientSecret,
+        callbackURL: 'http://localhost:4200/#/profile/company-welcome'
     }, (token, tokenSecret, profile, done) => {
         console.log(profile)
         // Client.findOrCreate({email: profile.email}, (err, user) => {
@@ -33,6 +33,7 @@ passport.use(
         // })
         Client.findOrcreate({googleId: profile.id}).then(
                 (successData) => {
+                    console.log(successData)
                         const clientData = {
                                 email : successData.email,
                                 token : createToken(successData.token)
