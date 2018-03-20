@@ -1,10 +1,10 @@
 const passport = require('passport'); 
 const LocalStrategy = require('passport-local').Strategy; 
-const GoogleStrategy = require('passport-google-oauth20')
+const GoogleStrategy = require('passport-google-oauth').OAuthStrategy
 const db = require('../models/index').sequelize; 
 const Client = db.import('../models/client.js');
 const bcrypt = require('bcryptjs');
-const keys = require('./keys')
+const keys = require('../config/keys')
 
 passport.use(new LocalStrategy( 
     {usernameField: 'email'},
@@ -23,25 +23,29 @@ passport.use(new LocalStrategy(
 
 passport.use(
     new GoogleStrategy({
-        callbackURL: '/profile/company-welcome',
-        ciendID: keys.google.clientID,
-        clientSecret: keys.google.clientSecret
-    }), (accessToken, refreshToken, profile, done) => {
+        consumerKey: keys.google.consumerKey,
+        consumerSecret: keys.google.consumerSecret,
+        callbackURL: '/profile/company-welcome'
+    }, (token, tokenSecret, profile, done) => {
         console.log(profile)
-        Client.findOrcreate({googleId: profile.id}).then(
-            (successData) => {
-                const clientData = {
-                    email : successData.email,
-                    token : createToken(successData.uid)
-                }
-                res.json({message: `Welcome ${clientData.firstname}`, data: clientData})
-            },
-            (err) => {
-                res.send({error: err})
-            }
-        )    
+        Client.findOrCreate({email: profile.email}, (err, user) => {
+             return done(err, user)
+        })
     }
-)
+))
+        // Client.findOrcreate({googleId: profile.id}).then(
+        //     (successData) => {
+        //         const clientData = {
+        //             email : successData.email,
+        //             token : createToken(successData.uid)
+        //         }
+        //         res.json({message: `Welcome ${clientData.firstname}`, data: clientData})
+        //     },
+        //     (err) => {
+        //         res.send({error: err, Client})
+   
+        //     }
+        // )
 
 
 module.exports = passport;
