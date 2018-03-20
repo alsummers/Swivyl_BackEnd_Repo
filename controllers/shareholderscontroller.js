@@ -14,7 +14,9 @@ router.post('/', requireJwt, (req, res)  => {
     var ownership = req.body.shareholders.ownership
     var company = req.body.company.uid
     var owner = req.user.uid
+    var letters = /^[a-zA-Z0-9\s-]+$/
 
+    if(req.body.shareholders.firstname.match(letters) && req.body.shareholders.lastname.match(letters) && req.body.shareholders.address.match(letters) && req.body.shareholders.ownership.match(letters)){
 
     Shareholders.create({
         firstname: firstname,
@@ -39,7 +41,10 @@ router.post('/', requireJwt, (req, res)  => {
         (err) => {
             res.send({error: err})
         }
-    )    
+    )
+} else {
+    res.send("Invalid characters")
+}    
 })
 
 //FINDING ALL ENTITIES OF SPECIFIC CLIENT

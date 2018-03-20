@@ -11,6 +11,9 @@ router.post('/', requireJwt, (req, res) => {
     var date = req.body.todo.dateDue
     var desc = req.body.todo.description
     var owner = req.user.uid
+    var letters = /^[a-zA-Z0-9\s-]+$/
+    
+    if(req.body.todo.dateDue.match(letters) && req.body.todo.description.match(letters)){
 
     Todo.create({
         companyId: company,
@@ -34,6 +37,9 @@ router.post('/', requireJwt, (req, res) => {
             res.send({ error: err })
         }
     )
+} else {
+    res.send("Invalid characters")
+}
 })
 //FINDING ALL TODO ASSIGNMENTS OF SPECIFIC CLIENT
 //RELOOK INTO WHEN DOING CLIENT SIDE
