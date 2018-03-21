@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const keys = require('../config/keys')
 
 passport.serializeUser((user, done) => { 
-    done(null, user.id);
+    done(null, user.email); //change to user.id for universal login
 });
 
 passport.deserializeUser((id, done) => {
@@ -32,6 +32,8 @@ passport.use(new LocalStrategy(
     })
 )
 
+////Currently, GoogleSignIn will work only if user is registered into the database.
+
 passport.use(
     new GoogleStrategy({
         clientID: keys.google.clientID,
@@ -46,12 +48,35 @@ passport.use(
         Client.findOne({ where: {email: profile.emails[0].value}}).then(
             (client) => {
                 if(!client) return done(null, false, { message: 'Incorrect email.' });
-                        },
-                        (err) => done(err)
-                        )
-                        done(null, profile)
-        }
-    ))
+
+                return done(null, client)
+            },
+            (err) => done(err))
+
+        })
+)
+// ==========Use for Universal Google Sign In (user does not have to be pre-registered)=========
+
+// passport.use(
+//     new GoogleStrategy({
+//         clientID: keys.google.clientID,
+//         clientSecret: keys.google.clientSecret,
+//         callbackURL: 'http://localhost:3000/auth/google/callback', 
+//     }, (token, tokenSecret, profile, done) => {
+//         console.log('PROFILELELELEL', profile)
+//         console.log('EMAIILALALA', profile.emails[0].value)
+//         // Client.create({email: profile._json.name}, (err, user) => {
+//         //      return done(err, user)
+//         // })
+//         Client.findOne({ where: {email: profile.emails[0].value}}).then(
+//             (client) => {
+//                 if(!client) return done(null, false, { message: 'Incorrect email.' });
+//                         },
+//                         (err) => done(err)
+//                         )
+//                         done(null, profile)
+//         }
+//     ))
 
 
 module.exports = passport;
