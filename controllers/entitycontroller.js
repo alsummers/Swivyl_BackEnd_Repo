@@ -14,7 +14,7 @@ router.post('/',requireJwt,(req, res)  => {
     var owner = req.user.uid
     
     
-    var letters = /([A-Za-z])+( [A-Za-z]+)/;
+    var letters = /([A-Za-z])/;
   
     if(req.body.entity.name.match(letters)){
 

@@ -40,11 +40,7 @@ passport.use(
         clientSecret: keys.google.clientSecret,
         callbackURL: 'http://localhost:3000/auth/google/callback', 
     }, (token, tokenSecret, profile, done) => {
-        console.log('PROFILELELELEL', profile)
-        console.log('EMAIILALALA', profile.emails[0].value)
-        // Client.create({email: profile._json.name}, (err, user) => {
-        //      return done(err, user)
-        // })
+
         Client.findOne({ where: {email: profile.emails[0].value}}).then(
             (client) => {
                 if(!client) return done(null, false, { message: 'Incorrect email.' });
