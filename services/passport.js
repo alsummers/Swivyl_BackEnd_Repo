@@ -21,7 +21,7 @@ passport.use(new LocalStrategy(
     (email, password, done) =>{        
         Client.findOne({ where: {email: email} }).then(
             (client) => {
-                console.log(password)
+                
                 if(!client) return done(null, false, { message: 'Incorrect email.' });
 
                 if(!bcrypt.compareSync(password, client.password)) return done(null, false, { message:  'Incorrect password' });
