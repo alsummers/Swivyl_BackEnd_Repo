@@ -24,7 +24,7 @@ router.post('/register', requireJwt, (req, res)  => {
     var entityId = req.body.entity.uid
     var company = req.body.company.uid
     var owner = req.user.uid
-    var letters = /^[A-Za-z]+$/;
+    var letters = /^[A-Za-z_'_-]+$/;
   
     if(req.body.password.length > 5 && req.body.firstname.match(letters) && req.body.lastname.match(letters)){
 
