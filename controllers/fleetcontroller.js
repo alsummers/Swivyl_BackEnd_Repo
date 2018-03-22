@@ -18,9 +18,9 @@ router.post('/',requireJwt,(req, res)  => {
     var entityId = req.body.entity.uid
     var company = req.body.company.uid
     var owner = req.user.uid
-    var letters = /^[,\%\.\w\d\s-]+$/
+    var letters = /^[/\,\%\.\w\d\s-]+$/
 
-    if(req.body.fleets.year.match(letters) && req.body.fleets.make.match(letters) && req.body.fleets.model.match(letters) && req.body.fleets.vin.match(letters) && req.body.fleets.driver.match(letters)
+    if(req.body.fleets.make.match(letters) && req.body.fleets.model.match(letters) && req.body.fleets.vin.match(letters) && req.body.fleets.driver.match(letters)
     && req.body.fleets.gzip.match(letters) && req.body.fleets.date.match(letters) && req.body.fleets.titledto.match(letters)){
     Fleet.create({
         year: year,
