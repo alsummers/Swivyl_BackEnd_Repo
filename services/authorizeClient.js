@@ -8,7 +8,7 @@ require('dotenv').config()
 passport.use(new JwtStrategy(
     {jwtFromRequest: ExtractJwt.fromHeader('authorization'), secretOrKey: process.env.JWTSECRET },
     (payload, done) => {
-        Client.findOne({where: {uid:payload.sub}}).then(
+        Client.findOne({where: {id:payload.sub}}).then(
             (client) => {
                 done(null, client)
             },

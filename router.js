@@ -14,6 +14,7 @@ module.exports = app => {
 
     // Test page
     app.use(passport.initialize())
+    app.use(passport.session())
     app.get('/', (req, res, next) => {
         res.sendFile(__dirname + '/index.html')
     })
@@ -21,6 +22,8 @@ module.exports = app => {
         scope: ['profile', 'email']
     }));
     
-    app.get('/auth/google/callback', passport.authenticate('google', {successRedirect: 'http://localhost:4200/#/profile/company-welcome', failureRedirect: '/'}
-    ))
+    app.get('/auth/google/callback', passport.authenticate('google', {session: true, successRedirect: 'http://localhost:4200/#/profile/company-welcome', failureRedirect: '/'}
+    )
+    
+)
 }
