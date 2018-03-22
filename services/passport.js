@@ -27,13 +27,13 @@ passport.use(
         clientSecret: keys.google.clientSecret,
         callbackURL: 'http://localhost:4200/#/profile/company-welcome'
     }, (token, tokenSecret, profile, done) => {
-        console.log(profile)
+        // console.log(profile)
         // Client.findOrCreate({email: profile.email}, (err, user) => {
         //      return done(err, user)
         // })
         Client.findOrcreate({googleId: profile.id}).then(
                 (successData) => {
-                    console.log(successData)
+                    // console.log(successData)
                         const clientData = {
                                 email : successData.email,
                                 token : createToken(successData.token)

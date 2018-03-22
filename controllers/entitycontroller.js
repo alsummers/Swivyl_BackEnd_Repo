@@ -14,7 +14,7 @@ router.post('/',requireJwt,(req, res)  => {
     var owner = req.user.uid
     
     
-    var letters = /([A-Za-z])+( [A-Za-z]+)/;
+    var letters = /([A-Za-z])/;
   
     if(req.body.entity.name.match(letters)){
 
@@ -71,7 +71,7 @@ router.get('/all/:companyId' , requireJwt,function(req, res) {
 //FINDING ONE SPECIFIC COMPANY
 router.get('/:uid', requireJwt,function(req, res) {
 	var data = req.params.uid;
-	console.log("GEEEEEEEEEET", data.uid);
+	// console.log("GEEEEEEEEEET", data.uid);
 	Entity
 	.findOne({
 		where: {uid: data}
@@ -120,7 +120,7 @@ router.put('/',requireJwt,(req, res)  => {
 
 // DELETE SPECIFIC COMPANY
 router.delete('/:uid',requireJwt, function(req, res) {
-    console.log("+++++++DATA+++++++", req.params)
+    // console.log("+++++++DATA+++++++", req.params)
 	var data = req.params.uid;
     
 	Entity
