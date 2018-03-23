@@ -71,7 +71,7 @@ router.get('/all/:companyId' , requireJwt,function(req, res) {
 //FINDING ONE SPECIFIC COMPANY
 router.get('/:uid', requireJwt,function(req, res) {
 	var data = req.params.uid;
-	console.log("GEEEEEEEEEET", data.uid);
+	// console.log("GEEEEEEEEEET", data.uid);
 	Entity
 	.findOne({
 		where: {uid: data}
@@ -120,7 +120,6 @@ router.put('/',requireJwt,(req, res)  => {
 
 // DELETE SPECIFIC COMPANY
 router.delete('/:uid',requireJwt, function(req, res) {
-
 	var data = req.params.uid;
     
 	Entity

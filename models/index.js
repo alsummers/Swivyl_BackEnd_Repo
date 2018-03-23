@@ -35,12 +35,14 @@ db.Sequelize = Sequelize;
 
 db.sequelize.authenticate().then(
   () => {
-    console.log('connected to the pg db')
+    // console.log('connected to the pg db')
   },
   (err) => {
-    console.log('there was an error with connecting', err)
+    // console.log('there was an error with connecting', err)
   }
 )
-db.sequelize.sync();
-// db.sequelize.sync({force: true});
+
+db.sequelize.sync(); 
+// db.sequelize.sync({force:true});
+
 module.exports = db;

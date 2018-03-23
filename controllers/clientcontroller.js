@@ -15,9 +15,12 @@ const createToken = (clientId) => {
 } 
 
 router.post('/register',(req, res)  => {
+
     var letters = /^[A-Za-z_'_-]+$/;
   
+
     if(req.body.password.length > 5 && req.body.firstname.match(letters) && req.body.lastname.match(letters)){
+
     Client.create(
         {
         firstname: req.body.firstname,
