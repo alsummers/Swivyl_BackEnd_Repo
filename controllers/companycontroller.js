@@ -33,8 +33,9 @@ const path = require('path')
             (successData) => {
                 Log.create({
                     clientUid: req.user.uid,
-                    description: req.user.uid + ' created a company with an id of ' + successData.id,
-                    message: 'created company'
+                    description: req.user.uid + ' created a company with an id of ' + successData.uid,
+                    message: 'created company',
+                    companyId: successData.uid
                 }).then(
                     (successLog) => {
                         res.json({log : successLog})
