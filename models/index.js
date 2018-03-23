@@ -41,6 +41,8 @@ db.sequelize.authenticate().then(
     // console.log('there was an error with connecting', err)
   }
 )
+
 db.sequelize.sync(); 
 // db.sequelize.sync({force:true});
+
 module.exports = db;
