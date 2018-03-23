@@ -47,9 +47,11 @@ passport.use(
             (client) => {
                 if(!client) return done(null, false, { message: 'Incorrect email.' });
 
-                return done( null, client)
+                return done(null, client)
             },
             (err) => done(err))
+            
+            done(null, profile)
 
         })
 )
