@@ -34,9 +34,10 @@ module.exports = app => {
     
 
 
-    app.get('/auth/google/callback', passport.authenticate('google', {session: true, successRedirect: 'http://localhost:4200/#/profile/company-welcome', failureRedirect: '/'}
-    )
-    
-)
+    app.get('/auth/google/callback', passport.authenticate('google', {successRedirect: 'http://localhost:4200/#/profile/company-welcome', failureRedirect: '/', session: false}), 
+    function(req, res) {
+        var token = TokenService.encode(req.user);
+        res.redirect("/api?token=" + token);
+    });
 
 }

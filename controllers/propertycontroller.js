@@ -19,7 +19,7 @@ router.post('/', requireJwt, (req, res)  => {
     var entityId = req.body.entity.uid
     var company = req.body.company.uid
     var owner = req.user.uid
-    var letters = /^[,\%\.\w\d\s-]+$/
+    var letters = /^[/\,\%\.\w\d\s-]+$/
     // var numbers = /\d+$/
 
 if (req.body.properties.address.match(letters) && req.body.properties.building_owner.match(letters) && req.body.properties.building_occ.match(letters)
