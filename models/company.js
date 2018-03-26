@@ -1,38 +1,23 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var clients = sequelize.define('clients', {
+  var company = sequelize.define('company', {
     uid:{
       type: DataTypes.UUID,
       unique: true,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    firstname: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    lastname: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING,
+    owner: {
+      type: DataTypes.UUID,
       allowNull: false,
-      
     },
-    email: {
+    img: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: {
-        args: true,
-        msg: 'Email already in use'
-      },
-      validate: {
-        isEmail: {
-          args: true, 
-          msg: "Must be a valid email"
-        }
-      }
+      allowNull: true,
     },
 
   }, {
@@ -43,5 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  return clients;
+  return company;
 };
