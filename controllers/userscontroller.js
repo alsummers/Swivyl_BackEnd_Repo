@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const db = require('../models/index');
+
 const User = db.sequelize.import('../models/user');
 const Log = db.sequelize.import('../models/log.js')
 const bcrypt = require('bcryptjs');

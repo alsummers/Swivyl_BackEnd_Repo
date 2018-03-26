@@ -2,7 +2,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy; 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const db = require('../models/index').sequelize; 
+
 const Client = db.import('../models/client.js');
+
 const bcrypt = require('bcryptjs');
 const keys = require('../config/keys')
 
