@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('./models/index')
 const router = require('./router');
+const googleSetup = require('./services/authorizeClient')
 
 app.use(cors());
 app.use(bodyParser.urlencoded({
@@ -14,9 +15,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+
 // endpoints 
 router(app);
 
-http.listen(process.env.PORT, function(){
-    console.log(`listening on port ${process.env.PORT}`)
+http.listen(3000, function(){
+    // console.log(`listening on port 3000`)
 })

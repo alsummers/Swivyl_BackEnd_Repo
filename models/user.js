@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var clients = sequelize.define('clients', {
+  var users = sequelize.define('users', {
     uid:{
       type: DataTypes.UUID,
       unique: true,
@@ -8,8 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     firstname: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: ["^[a-z]+$",'i'],  
+        msg: "name must contain characters"
+      }
     },
     lastname: {
       type: DataTypes.STRING,
@@ -18,7 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      
+      validate: {
+        min: {
+          args: 5,
+          msg: 'Password must have more than 5 characters and contain no spaces.'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
@@ -34,7 +43,18 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-
+    entityId: {
+        type: DataTypes.UUID,
+        allowNull: false
+    },
+    companyId: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    owner: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   }, {
     classMethods: {
       associate: function(models) {
@@ -43,5 +63,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  return clients;
+  return users;
 };
